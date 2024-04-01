@@ -1,10 +1,11 @@
-package com.example.Pr01Counter;
+package com.study.Pr04CounterAPI;
 
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
 @Data
-@Component
+@Builder
 public class Counter {
     private int count;
     void plus(){

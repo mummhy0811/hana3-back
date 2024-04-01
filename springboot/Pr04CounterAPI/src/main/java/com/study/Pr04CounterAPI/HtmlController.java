@@ -9,7 +9,9 @@ import java.time.LocalDate;
 public class HtmlController {
     @GetMapping("/")
     public String main(){
-        ApiController.counter= new Counter(0);
+
+        Counter counter = new Counter(0);
+        ApiController.counter=counter;
 
         return "index";
     }

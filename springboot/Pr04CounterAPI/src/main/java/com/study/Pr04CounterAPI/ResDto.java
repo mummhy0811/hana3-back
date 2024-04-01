@@ -1,2 +1,8 @@
-package com.study.Pr04CounterAPI;public class ResDto {
+package com.study.Pr04CounterAPI;
+
+import lombok.Data;
+
+@Data
+public class ResDto {
+    private int cnt;
 }
