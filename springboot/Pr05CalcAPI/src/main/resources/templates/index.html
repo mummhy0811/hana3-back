@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>계산기</title>
+    <script src="https://cdn.tailwindcss.com">
+        const clear = () => {
+            document.getElementsByName("a")[0].value = "0";
+            document.getElementsByName("b")[0].value = "0";
+        }
+    </script>
+</head>
+<body>
+    <div class="flex flex-column justify-center m-10 border border-gray-500 p-10">
+        <form class="flex flex-col w-1.0 gap-1" method="get">
+            <h3 class="text-center my-5">계산기 프로그램</h3>
+            <label class="flex justify-between"> 숫자1
+                <input class="bg-gray-300 border border-gray-500 p-1 text-center m-1" name="a" th:value="|${a}|" type="number"/>
+            </label>
+            <label class="flex justify-between"> 숫자2
+                <input class="bg-gray-300 border border-gray-500 p-1 text-center m-1" name="b" th:value="|${b}|" type="number"/>
+            </label>
+            <label class="flex justify-between mb-2"> 연산 결과
+                <input class="bg-gray-500 border border-gray-500 p-1 text-center m-1 text-white" disabled th:value="|${answer}|" type="text"/>
+            </label>
+            <input class="bg-blue-600 p-1 text-white" formaction="/add" type="submit" value="덧셈"/>
+            <input class="bg-blue-600 p-1 text-white" formaction="/sub" type="submit" value="뺄셈"/>
+            <input class="bg-blue-600 p-1 text-white" formaction="/mul" type="submit" value="곱셈"/>
+            <input class="bg-blue-600 p-1 text-white" formaction="/div" type="submit" value="나눗셈"/>
+            <button class="bg-red-600 p-1 text-white" onclick="clear()" type="button">지우기</button>
+        </form>
+    </div>
+</body>
+</html>
