@@ -1,4 +1,4 @@
-package com.example.Pr01Counter;
+package com.example.Pr05CalcAPI;
 
 import lombok.Data;
 

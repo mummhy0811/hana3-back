@@ -1,37 +1,45 @@
-package com.example.Pr02Calc;
+package com.example.Pr05CalcAPI;
 
-import lombok.Getter;
+import lombok.Data;
 import org.springframework.stereotype.Component;
 
 @Component
-@Getter
+@Data
 public class Calculator {
-    private int A;
-    private int B;
-    private int answer;
-    private double divAnswer;
 
-    public void add(int a, int b) {
-        A = a;
-        B = b;
-        answer = a + b;
+    double result = 0;
+
+    public double calc(ReqDto reqDto){
+        int intNum1 = Integer.parseInt( reqDto.getNum1() );
+        int intNum2 = Integer.parseInt( reqDto.getNum2() );
+
+        if(reqDto.getOperation().equals("add")){
+            this.result = this.add(intNum1, intNum2);
+        }else if(reqDto.getOperation().equals("sub")){
+            this.result = this.sub(intNum1, intNum2);
+        }else if(reqDto.getOperation().equals("mul")){
+            this.result = this.mul(intNum1, intNum2);
+        }else{
+            this.result = this.div(intNum1, intNum2);
+        }
+
+        return this.result;
     }
 
-    public void sub(int a, int b) {
-        A = a;
-        B = b;
-        answer = a - b;
+    public int add(int a, int b){
+        result = a + b;
+        return (int)result;
     }
-
-    public void mul(int a, int b) {
-        A = a;
-        B = b;
-        answer = a * b;
+    public int sub(int a, int b){
+        result = a - b;
+        return (int)result;
     }
-
-    public void div(int a, int b) {
-        A = a;
-        B = b;
-        divAnswer = (double) a / (double) b;
+    public int mul(int a, int b){
+        result = a * b;
+        return (int)result;
+    }
+    public double div(int a, int b){
+        result = (double)a / (double)b;
+        return result;
     }
 }

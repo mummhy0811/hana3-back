@@ -1,34 +1,66 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko"  xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>계산기</title>
-    <script src="https://cdn.tailwindcss.com">
-        const clear = () => {
-            document.getElementsByName("a")[0].value = "0";
-            document.getElementsByName("b")[0].value = "0";
-        }
-    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <div class="flex flex-column justify-center m-10 border border-gray-500 p-10">
-        <form class="flex flex-col w-1.0 gap-1" method="get">
-            <h3 class="text-center my-5">계산기 프로그램</h3>
-            <label class="flex justify-between"> 숫자1
-                <input class="bg-gray-300 border border-gray-500 p-1 text-center m-1" name="a" th:value="|${a}|" type="number"/>
-            </label>
-            <label class="flex justify-between"> 숫자2
-                <input class="bg-gray-300 border border-gray-500 p-1 text-center m-1" name="b" th:value="|${b}|" type="number"/>
-            </label>
-            <label class="flex justify-between mb-2"> 연산 결과
-                <input class="bg-gray-500 border border-gray-500 p-1 text-center m-1 text-white" disabled th:value="|${answer}|" type="text"/>
-            </label>
-            <input class="bg-blue-600 p-1 text-white" formaction="/add" type="submit" value="덧셈"/>
-            <input class="bg-blue-600 p-1 text-white" formaction="/sub" type="submit" value="뺄셈"/>
-            <input class="bg-blue-600 p-1 text-white" formaction="/mul" type="submit" value="곱셈"/>
-            <input class="bg-blue-600 p-1 text-white" formaction="/div" type="submit" value="나눗셈"/>
-            <button class="bg-red-600 p-1 text-white" onclick="clear()" type="button">지우기</button>
-        </form>
-    </div>
+<div id="wrap" class="flex flex-column justify-center m-10 border border-gray-500 p-10">
+    <form class="flex flex-col w-1.0 gap-1" name="formCalc" method="get">
+        <h3 class="text-center my-5">계산기 프로그램</h3>
+        <label class="flex justify-between"> 숫자1
+
+        </label>
+        <label for="num1"></label><input class="bg-gray-300 border border-gray-500 p-1 text-center m-1" type="text" id="num1" name="num1" th:value="${ num1 }"/>
+        <label class="flex justify-between"> 숫자2
+        </label>
+        <label for="num2"></label><input class="bg-gray-300 border border-gray-500 p-1 text-center m-1" type="text" id="num2" name="num2" th:value="${ num2 }" />
+        <label class="flex justify-between mb-2"> 연산 결과
+        </label>
+        <label for="result"></label><input class="bg-gray-500 border border-gray-500 p-1 text-center m-1 text-white" type="text" disabled="disbled" id="result" th:value="${ result }"/>
+
+        <div>
+            <button class="bg-blue-600 p-1 text-white" onclick="calc('add')" type="button"  id="add" >덧셈</button>
+            <button class="bg-blue-600 p-1 text-white" onclick="calc('sub')" type="button"  id="sub" >뺄셈</button>
+            <button class="bg-blue-600 p-1 text-white" onclick="calc('mul')" type="button" id="mul">곱셈</button>
+            <button class="bg-blue-600 p-1 text-white" onclick="calc('div')" type="button" id="div">나눗셈</button>
+            <button class="bg-red-600 p-1 text-white"  onclick="clearFields()" type="button"  id="del">지우기</button>
+        </div>
+    </form>
+    <script >
+        function calc( op ){
+            console.log(op);
+             fetch("http://localhost:8080/calc",{
+                   method: "POST",
+                   headers: { "Content-Type": "application/json" },
+                   body: JSON.stringify({ //객체를 문자열로 만듦.
+                       operation: op,
+                       num1: document.getElementById('num1').value,
+                       num2: document.getElementById('num2').value,
+                   })
+               })
+               .then((response) => { //HTTP 응답객체
+                   console.log(response);
+                   return response.json();
+               })
+               .then((json) =>  { //JSON객체
+                   //{ status: "ok", result: 5.345 }
+                   console.log(json);
+                   //응답메시지 표시하기
+                   document.getElementById("result").value = json.result;
+               })
+               .catch((error) => {
+                   console.log(error);
+               })
+           }
+           function clearFields(){
+               console.log('clear');
+               document.getElementById('num1').value = '';
+               document.getElementById('num2').value = '';
+               document.getElementById('result').value = '';
+           }
+    </script>
+</div>
 </body>
 </html>
