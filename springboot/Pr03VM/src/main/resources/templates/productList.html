@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko"  xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -70,20 +70,20 @@
                 <th scope="col" id="editTitle">수정</th>
                 <th scope="col" id="removeTitle">삭제</th>
               </tr>
-              <tr class="text-center align-middle">
-                <th scope="row"><span>1</span></th>
-                <td class="text-center align-middle">
-                  <span>베이컨버거</span>
+              <tr th:each="product, status: ${list}" class="text-center align-middle">
+                <th th:text="${status.count}" scope="row"></th>
+                <td th:text="${product.name}" class="text-center align-middle">
+                  베이컨버거
                 </td>
-                <td class="text-center align-middle">
-                  <span>10000</span>
+                <td th:text="${product.price}" class="text-center align-middle">
+                  10000
                 </td>
-                <td class="text-center align-middle">
-                  <span>2024-03-06</span>
+                <td th:text="${product.limit_date}" class="text-center align-middle">
+                  2024-03-06
                 </td>
                 <td class="text-center align-middle">
                   <a
-                    href="/editProductForm?index=0"
+                    th:href="|/editProductForm?index=${status.index}|"
                     class="btn btn-primary fw-bold editBtn"
                     role="button"
                     >수정</a
@@ -91,7 +91,7 @@
                 </td>
                 <td class="text-center align-middle">
                   <a
-                    href="/deleteProduct?index=0"
+                    th:href="|/deleteProduct?index=${status.index}|"
                     class="btn btn-danger fw-bold removeBtn"
                     role="button"
                     onclick="return confirmAndNotify(this)"
