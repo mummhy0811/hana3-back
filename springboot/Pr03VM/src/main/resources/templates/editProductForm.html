@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -28,7 +28,7 @@
 
         <form action="/editProduct" method="post">
           <!-- 인덱스 생성 -->
-          <input type="hidden" name="index" value="0" />
+          <input type="hidden" name="index" th:value="${index}" />
           <!-- 상품명 -->
           <div class="form-group">
             <label for="inputName" class="text-white">상품명:</label>
@@ -37,7 +37,7 @@
               class="form-control"
               id="inputName"
               name="inputName"
-              value="베이컨버거"
+              th:value="${products.name}"
               required
             />
           </div>
@@ -50,7 +50,7 @@
               class="form-control"
               id="inputPrice"
               name="inputPrice"
-              value="10000"
+              th:value="${products.price}"
               required
             />
           </div>
@@ -63,7 +63,7 @@
               class="form-control datepicker"
               id="inputLimitDate"
               name="inputLimitDate"
-              value="2024-03-06"
+              th:value="${products.limit_date}"
               required
             />
           </div>

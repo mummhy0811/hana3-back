@@ -70,16 +70,13 @@
                 <th scope="col" id="editTitle">수정</th>
                 <th scope="col" id="removeTitle">삭제</th>
               </tr>
-              <tr th:each="product, status: ${list}" class="text-center align-middle">
+              <tr th:each="product, status: ${products}" class="text-center align-middle">
                 <th th:text="${status.count}" scope="row"></th>
                 <td th:text="${product.name}" class="text-center align-middle">
-                  베이컨버거
                 </td>
                 <td th:text="${product.price}" class="text-center align-middle">
-                  10000
                 </td>
                 <td th:text="${product.limit_date}" class="text-center align-middle">
-                  2024-03-06
                 </td>
                 <td class="text-center align-middle">
                   <a
@@ -108,8 +105,8 @@
           class="listSizeBox bg-white rounded-start text-danger fw-bold"
         >
           <span id="total">▲ 총</span>
-          <span class="text-dark">1</span>
-          <span id="totalNum">개의 상품이 있습니다.</span>
+          <span class="text-dark" th:text="${count}"></span>
+          <span id="totalNum" >개의 상품이 있습니다.</span>
         </div>
         <!-- 상품 추가하기 버튼 -->
         <div style="clear: both" class="d-flex justify-content-center">

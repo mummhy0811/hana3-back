@@ -1,5 +1,6 @@
 package com.study.Pr03VM;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ public class MainController {
     @GetMapping("/")
     public String main(Model model){
         model.addAttribute("products", products);
+        model.addAttribute("count", products.size());
         return "productList";
     }
 
@@ -27,32 +29,46 @@ public class MainController {
     }
 
     @GetMapping("/editProductForm")
-    public String editProductForm(){
+    public String editProductForm(@RequestParam int index, Model model){
+        model.addAttribute("index", index);
+        model.addAttribute("products", products.get(index));
         return "editProductForm";
     }
 
-    @PostMapping("/addProduct")
-    @ResponseBody
-    public String add(@RequestParam String name, @RequestParam int price, @RequestParam LocalDate limitDate){
+@PostMapping("/addProduct")
+public String addProduct(@RequestParam String inputName, @RequestParam int inputPrice, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate inputLimitDate){
+    Product product = Product.builder()
+            .name(inputName)
+            .price(inputPrice)
+            .limit_date(inputLimitDate)
+            .build();
 
-        Product product = Product.builder()
-                .name(name)
-                .price(price)
-                .limit_date(limitDate)
-                .build();
+    products.add(product);
 
-        products.add(product);
-
-        return "<script>alert('상품이 추가되었습니다.'); location.href='/'; </script>";
-    }
+    return "redirect:/";
+}
 
     @GetMapping("/deleteProduct")
-    public String delete(@RequestParam String index, Model model){
+    @ResponseBody
+    public String deleteProduct(@RequestParam String index, Model model){
 
         products.remove( Integer.parseInt(index) );
 
         model.addAttribute("products", products);
 
-        return "admin";
+        return "<script>alert('상품이 삭제되었습니다.'); location.href='/'; </script>\"";
+    }
+    @PostMapping("/editProduct")
+    @ResponseBody
+    public String editProduct(@RequestParam int index, @RequestParam String inputName, @RequestParam int inputPrice, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate inputLimitDate){
+
+        Product product = products.get(index);
+        product.setName(inputName);
+        product.setPrice(inputPrice);
+        product.setLimit_date(inputLimitDate);
+
+        products.set(index, product);
+
+        return "<script>alert('상품이 수정되었습니다.'); location.href='/'; </script>\"";
     }
 }

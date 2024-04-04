@@ -1,2 +1,8 @@
-package com.study.Ex09MemberList;public class ReceiveData {
+package com.study.Ex09MemberList;
+
+import lombok.Data;
+
+@Data
+public class ReceiveData {
+    private String inputName;
 }
