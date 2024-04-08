@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html
+        lang="ko"
+>
+<head>
+    <meta charset="UTF-8" />
+    <title>관리자 페이지</title>
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+            crossorigin="anonymous"
+    />
+    <script>
+          window.addEventListener("load", (event) => {
+            getMemberList();
+          });
+          function getMemberList(){
+            fetch("/members", {
+              method: "GET",
+              headers: { "Content-Type": "application/json" }
+            })
+            .then((response) => {
+              return response.json();
+            })
+            .then((json) => {
+              makeMemberList( json );
+            })
+          }
+          function makeMemberList( memberList ){
+            let tbody = document.getElementById("member-tbody");
+            tbody.innerHTML = '';
+            console.log(memberList.length);
+            memberList.forEach((member, index) => {
+              let trStr = `<tr class="text-center align-middle">
+                <th scope="row">${index + 1}</th>
+                <td class="text-center align-middle">${member.name} </td>
+                <td class="text-center align-middle">${member.password}</td>
+                <td class="text-center align-middle">${member.email}</td>
+                <td class="text-center align-middle">${member.joindate}</td>
+                <td class="text-center align-middle">
+                  <a
+                    href="/edit-form?index=${index}"
+                    class="btn btn-primary fw-bold editBtn"
+                    role="button"
+                    onclick="return onEdit(this)"
+                    >수정</a
+                  >
+                </td>
+                <td class="text-center align-middle">
+                  <a
+                    href="/delete?index=${index}"
+                    class="btn btn-danger fw-bold removeBtn"
+                    role="button"
+                    onclick="return confirmAndNotify(this)"
+                    >삭제</a
+                  >
+                </td>
+              </tr>`;
+
+              tbody.insertAdjacentHTML('beforeend', trStr);
+            });
+          }
+
+          //상품 수정 페이지 요청
+          function onEdit(button) {
+            window.location.href = button.getAttribute("href");
+          }
+
+          // 상품 삭제 경고창
+          function confirmAndNotify(button) {
+            var confirmation = confirm("정말로 삭제하시겠습니까?");
+            if (confirmation) {
+              const url = button.getAttribute("href");
+
+              fetch( url, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" }
+              })
+              .then((response) => { //HTTP 응답 객체
+                return response.json();
+              })
+              .then((json) => { //JSON JS객체
+                alert(json.message);
+                getMemberList();
+              })
+            }
+            return false;
+          }
+
+    </script>
+</head>
+<body>
+
+<div
+        class="container-fluid p-4"
+        style="background-color: #eee"
+>
+    <div class="row">
+        <div
+                class="container-fluid"
+                style="
+                    background-color: white;
+                    max-width: 1200px;
+                    border-radius: 20px;
+                    "
+        >
+            <h1 class="my-5 text-center">관리자페이지 - 회원목록</h1>
+
+            <table class="table table-striped">
+                <thead>
+                <tr >
+                    <th>번호</th>
+                    <th>아이디</th>
+                    <th>암호</th>
+                    <th>이메일</th>
+                    <th>가입일</th>
+                    <th class="text-center">수정</th>
+                    <th class="text-center">삭제</th>
+                </tr>
+                </thead>
+                <tbody id="member-tbody">
+                </tbody>
+            </table>
+
+            <div class="text-center my-5">
+                <a
+                        href="/"
+                        class="btn btn-primary"
+                        role="button"
+                >종료</a
+                >
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
