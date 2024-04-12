@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- NOTE) SQL 끝에 ; 세미콜론 금지-->
+<!-- NOTE) id는 함수 이름 -->
+<mapper namespace="com.study.Ex14ReadDB.dao.IMemberDao">
+
+    <select id="list" resultType="com.study.Ex14ReadDB.dto.MemberDto">
+        SELECT * FROM member ORDER BY join_date DESC
+    </select>
+
+<!-- NOTE)  int -> Integer, int -> int-->
+    <select id="count" resultType="_int">
+        SELECT count(*) FROM member
+    </select>
+
+<!--    NOTE) 파라미터는 #{param1}  #{param2} ... 예약어 사용 -->
+    <select id="findById" resultType="com.study.Ex14ReadDB.dto.MemberDto">
+        SELECT * FROM member where id=#{ param1 }
+    </select>
+
+    <!--    NOTE) DTO는 #{이름}  예약어 사용 -->
+    <insert id="insert" parameterType="com.study.Ex14ReadDB.dto.MemberDto">
+        INSERT INTO member values(0, #{userId}, #{userPw}, #{userName}, #{userRole}, #{joinDate})
+    </insert>
+    <insert id="insertMap" parameterType="map">
+        INSERT INTO member values(0, #{userId}, #{userPw}, #{userName}, #{userRole}, #{joinDate})
+    </insert>
+
+    <update id="update">
+        UPDATE member SET user_id = #{userId}, user_pw= #{userPw}, user_name= #{userName}, user_role= #{userRole}, join_date= #{joinDate} WHERE id=#{ id }
+    </update>
+
+    <delete id="delete">
+        DELETE from member WHERE id=#{ param1 }
+    </delete>
+
+</mapper>
