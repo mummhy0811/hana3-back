@@ -3,7 +3,9 @@ package com.study.springboot.controller;
 import com.study.springboot.domain.board.Board;
 import com.study.springboot.dto.BoardResponseDto;
 import com.study.springboot.dto.BoardSaveRequestDto;
+import com.study.springboot.dto.ReplyResponseDto;
 import com.study.springboot.service.BoardService;
+import com.study.springboot.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +19,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class BoardController {
     private final BoardService boardService;
+    private final ReplyService replyService;
 
     @GetMapping("/")
     public String main(){
@@ -60,6 +63,8 @@ public class BoardController {
         dto.setBoardHit(dto.getBoardHit() + 1);
         model.addAttribute("dto", dto);
 
+        List<ReplyResponseDto> replyList = replyService.findById(boardIdx);
+        model.addAttribute("replyList", replyList);
         //조회수 증가
         boardService.updateHit(boardIdx, dto.getBoardHit() + 1);
 
@@ -75,6 +80,17 @@ public class BoardController {
         }else{
             //업데이트 실패
             return "<script>alert('글수정 실패'); history.back();</script>";
+        }
+    }
+    @GetMapping("/deleteAction")
+    @ResponseBody
+    public String deleteReplyAction(@RequestParam Long boardIdx){
+        boardService.delete(boardIdx);
+        boolean isFound = boardService.existsById(boardIdx);
+        if (!isFound) {
+            return "<script>alert('글삭제 성공'); location.href='/';</script>";
+        } else {
+            return "<script>alert('글삭제 실패'); history.back();</script>";
         }
     }
 }

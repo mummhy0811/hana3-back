@@ -16,6 +16,7 @@
         table, td {
             width: 500px;
             border: 1px solid black;
+            margin-top: 10px;
         }
         a {
             text-decoration-line: none;
@@ -56,9 +57,7 @@
                 <a href="listForm">
                     <input type="button" value="목록보기">
                 </a>&nbsp;&nbsp;
-                <a href="deleteAction?boardIdx=${ dto.boardIdx }">
-                    <input type="button" value="삭제하기"></a>
-                </a>
+                <a th:href="|deleteAction?boardIdx=${ dto.boardIdx }|"><input type="button" value="삭제하기"></a>
             </td>
         </tr>
     </table>
@@ -77,5 +76,25 @@
         </tr>
     </table>
 </form>
+<table cellpadding="0" cellspacing="0">
+    <thead>
+        <tr>
+            <td>별명</td>
+            <td>내용</td>
+            <td>날짜</td>
+            <td>삭제하기</td>
+        </tr>
+        </thead>
+    <tbody>
+        <tr th:each="reply, status : ${ replyList }">
+            <td th:text="${ reply.replyName }"></td>
+            <td th:text="${ reply.replyContent }"></td>
+            <td th:text="${ #temporals.format(reply.replyDate, 'yyyy-MM-dd HH:mm') }"></td>
+            <td>
+                <a th:href="|../reply/deleteReplyAction?boardIdx=${dto.boardIdx}&&replyIdx=${ reply.replyIdx }|"><input type="button" value="삭제하기"></a>
+            </td>
+        </tr>
+    </tbody>
+</table>
 </body>
 </html>

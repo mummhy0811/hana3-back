@@ -89,4 +89,8 @@ public class BoardService {
         //예전의 방식) Board newEntity = boardRepository.save( entity );
         return entity;
     }
+
+    public void delete(Long idx){
+        boardRepository.deleteById(idx);
+    }
 }
